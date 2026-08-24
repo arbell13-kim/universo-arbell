@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Universo Arbell</title>
+<style>
+:root{--blue:#7da8b8; --blue2:#b9d3dc; --purple:#9d8ac0; --purple2:#d5ccea; --bg:#eef5f7; --card:#fff; --text:#2f4450;}
+*{box-sizing:border-box} body{margin:0; background:var(--bg); font-family:system-ui; color:var(--text); padding-bottom:90px}
+header{text-align:center; padding:22px 16px; background:linear-gradient(90deg,#d6e8ee 0%, #e6ddf5 100%)}
+h1{margin:6px 0 0; font-size:22px}
+.main-tabs{display:flex; gap:10px; justify-content:center; margin:14px}
+.main-tab{padding:12px 22px; border-radius:26px; background:white; border:2px solid #d0d6e8; cursor:pointer; font-weight:bold; font-size:14px}
+.main-tab.active-libros{background:var(--blue); color:white; border-color:var(--blue)}
+.main-tab.active-dramas{background:var(--purple); color:white; border-color:var(--purple)}
+.subtabs{display:flex; gap:8px; justify-content:center; margin:12px; flex-wrap:wrap}
+.tab{padding:8px 14px; border-radius:20px; background:white; border:1.5px solid #d0e2e8; cursor:pointer; font-size:12.5px}
+.tab.active{background:#2f4450; color:white}
+.container{max-width:680px; margin:auto; padding:0 14px}
+.form{background:white; border-radius:20px; padding:18px; box-shadow:0 8px 24px rgba(0,0,0,.08); margin-bottom:14px}
+label{font-size:12px; font-weight:700; margin-top:10px; display:block}
+input,select,textarea{width:100%; padding:11px; border-radius:12px; border:1.5px solid #d0e2e8; margin-top:6px; background:#f8fbfc; font-size:14px}
+.upload-box{border:2px dashed #b9d3dc; border-radius:16px; padding:18px; text-align:center; background:#f7fbfc; cursor:pointer}
+.upload-box.purple{border-color:var(--purple2); background:#f9f6ff}
+.pill{display:inline-block; padding:6px 12px; border-radius:20px; background:#f0e9fb; border:1px solid #d5ccea; margin:4px; cursor:pointer; font-size:12px}
+.pill.active{background:var(--purple); color:white}
+button.main{border:none; padding:14px; border-radius:14px; width:100%; font-weight:bold; margin-top:14px; color:white; cursor:pointer}
+.btn-blue{background:var(--blue)}.btn-purple{background:var(--purple)}
+.card{background:white; border-radius:16px; padding:12px; margin:12px 0; display:flex; gap:12px; box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.card img{width:60px; height:84px; object-fit:cover; border-radius:10px; background:#d6e8ee}
+input[type=range]{accent-color:var(--blue); padding:0}
+.author-group{margin:18px 0 6px; font-weight:800; color:var(--blue); border-left:4px solid var(--blue2); padding-left:10px}
+</style></head><body>
+<header><div style="font-size:24px">💙💜</div><h1>Universo Arbell</h1><small style="opacity:.7">Club de lectura Namjoon's • K-dramas & Libros</small></header>
+
+<div class="main-tabs">
+<div id="btnLibros" class="main-tab active-libros" onclick="setMain('libros')">📚 Biblioteca</div>
+<div id="btnDramas" class="main-tab" onclick="setMain('dramas')">📺 Dramas</div>
+</div>
+
+<!-- LIBROS -->
+<div id="secLibros" class="container">
+<div class="subtabs">
+<div class="tab active" onclick="setFiltroLibro('Leídos')">Leídos</div>
+<div class="tab" onclick="setFiltroLibro('Empezados')">Empezados</div>
+<div class="tab" onclick="setFiltroLibro('Pendientes')">Pendientes</div>
+<div class="tab" onclick="setFiltroLibro('Bloqueo')">Bloqueo</div>
+</div>
+<div class="form">
+<div class="upload-box" onclick="libFoto.click()"><span>📷</span><b>Subir portada libro</b><br><small id="libFileName">Toca para añadir</small><input type="file" id="libFoto" accept="image/*" hidden></div>
+<input id="libTitulo" placeholder="Nombre del libro"><input id="libAutor" placeholder="Autor">
+<div style="display:flex; gap:8px"><input id="libPag" type="number" placeholder="Páginas"><input id="libVeces" type="number" placeholder="Veces" value="1"></div>
+<div style="display:flex; gap:8px"><div style="flex:1"><label>Inicio</label><input id="libIni" type="date"></div><div style="flex:1"><label>Fin</label><input id="libFin" type="date"></div></div>
+<select id="libEstado"><option>Leídos</option><option>Empezados</option><option>Pendientes</option><option>Bloqueo</option></select>
+<label>Calif libro: <span id="lc1">5</span> ⭐</label><input id="libCal" type="range" min="1" max="5" step="0.5" value="5">
+<label>Calif adaptación: <span id="lc2">0</span> ⭐</label><input id="libCalA" type="range" min="0" max="5" step="0.5" value="0">
+<button class="main btn-blue" onclick="guardarLibro()">Guardar libro</button>
+</div><div id="listaLibros"></div>
+</div>
+
+<!-- DRAMAS -->
+<div id="secDramas" class="container" style="display:none">
+<div class="subtabs">
+<div class="tab active" onclick="setFiltroDrama('Vistos')">Vistos</div>
+<div class="tab" onclick="setFiltroDrama('Viendo')">Viendo</div>
+<div class="tab" onclick="setFiltroDrama('Pendientes')">Pendientes</div>
+<div class="tab" onclick="setFiltroDrama('Pausados')">Pausados</div>
+</div>
+<div class="form">
+<div class="upload-box purple" onclick="draFoto.click()"><span>📷</span><b>Subir portada drama</b><br><small id="draFileName">Toca para añadir</small><input type="file" id="draFoto" accept="image/*" hidden></div>
+<input id="draTitulo" placeholder="Título del drama">
+<label>Calif: <span id="dc">5</span> ⭐</label><input id="draCal" type="range" min="1" max="5" step="0.5" value="5" style="accent-color:var(--purple)">
+<select id="draPlata"><option>Netflix</option><option>Viki</option><option>Disney+</option><option>Prime</option><option>Otro</option></select>
+<label>Idioma:</label><div><span class="pill active" data-lang="Coreano">Coreano</span><span class="pill" data-lang="Chino">Chino</span><span class="pill" data-lang="Japonés">Japonés</span></div>
+<div style="display:flex; gap:8px"><input id="draCaps" placeholder="Capítulos"><input id="draTiempo" placeholder="Tiempo (ej: 5 días)"></div>
+<button class="main btn-purple" onclick="guardarDrama()">Guardar drama</button>
+</div><div id="listaDramas"></div>
+</div>
+
+<script>
+let libros=JSON.parse(localStorage.getItem('arbell_libros')||'[]');
+let dramas=JSON.parse(localStorage.getItem('arbell_dramas')||'[]');
+let fLibro='Leídos', fDrama='Vistos', main='libros', idioma='Coreano';
+libCal.oninput=e=>lc1.innerText=e.target.value; libCalA.oninput=e=>lc2.innerText=e.target.value; draCal.oninput=e=>dc.innerText=e.target.value;
+libFoto.onchange=e=>libFileName.innerText=e.target.files[0]?.name||'Toca para añadir'; draFoto.onchange=e=>draFileName.innerText=e.target.files[0]?.name||'Toca para añadir';
+document.querySelectorAll('[data-lang]').forEach(p=>p.onclick=()=>{document.querySelectorAll('[data-lang]').forEach(x=>x.classList.remove('active')); p.classList.add('active'); idioma=p.dataset.lang});
+function setMain(m){main=m; secLibros.style.display=m==='libros'?'block':'none'; secDramas.style.display=m==='dramas'?'block':'none'; btnLibros.className='main-tab '+(m==='libros'?'active-libros':''); btnDramas.className='main-tab '+(m==='dramas'?'active-dramas':''); if(m==='libros') renderLibros(); else renderDramas();}
+function setFiltroLibro(f){fLibro=f; document.querySelectorAll('#secLibros.tab').forEach(t=>t.classList.toggle('active',t.textContent===f)); renderLibros();}
+function setFiltroDrama(f){fDrama=f; document.querySelectorAll('#secDramas.tab').forEach(t=>t.classList.toggle('active',t.textContent===f)); renderDramas();}
+function guardarLibro(){const file=libFoto.files[0]; const r=new FileReader(); r.onload=()=>{libros.unshift({foto:r.result||'', titulo:libTitulo.value, autor:libAutor.value, pag:libPag.value, veces:libVeces.value, ini:libIni.value, fin:libFin.value, estado:libEstado.value, calif:libCal.value, calA:libCalA.value}); localStorage.setItem('arbell_libros',JSON.stringify(libros)); libTitulo.value=libAutor.value=''; renderLibros(); alert('Libro guardado 💙');}; if(file) r.readAsDataURL(file); else r.onload();}
+function renderLibros(){let fil=libros.filter(l=>l.estado===fLibro); let porAutor={}; fil.forEach(l=>{if(!porAutor[l.autor||'Sin autor']) porAutor[l.autor||'Sin autor']=[]; porAutor[l.autor||'Sin autor'].push(l);}); let h=''; for(let a in porAutor){h+=`<div class="author-group">🍃 ${a}</div>`; porAutor[a].forEach(l=>{h+=`<div class="card"><img src="${l.foto}"><div><b>${l.titulo}</b><br><small>${l.pag||0} pgs • ★${l.calif} | Adap ${l.calA}</small></div></div>`});} listaLibros.innerHTML=h||`<p style="text-align:center; opacity:.6">No hay en ${fLibro}</p>`;}
+function guardarDrama(){const file=draFoto.files[0]; const r=new FileReader(); r.onload=()=>{dramas.unshift({foto:r.result||'', titulo:draTitulo.value, calif:draCal.value, plata:draPlata.value, idioma, caps:draCaps.value, tiempo:draTiempo.value, estado:fDrama}); localStorage.setItem('arbell_dramas',JSON.stringify(dramas)); draTitulo.value=''; renderDramas(); alert('Drama guardado 💜');}; if(file) r.readAsDataURL(file); else r.onload();}
+function renderDramas(){let fil=dramas.filter(d=>d.estado===fDrama); listaDramas.innerHTML=fil.map(d=>`<div class="card"><img src="${d.foto}"><div><b>${d.titulo}</b><br><small>${d.idioma} • ${d.plata} • ★${d.calif} • ${d.caps||0} caps</small></div></div>`).join('')||`<p style="text-align:center; opacity:.6">No hay en ${fDrama}</p>`;}
+renderLibros();
+</script></body></html>
