@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Universo Arbell 💙💜</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Nunito',sans-serif}
+body{
+  background: linear-gradient(135deg, #a8c0ff 0%, #c2b6ff 25%, #e8d5ff 50%, #b8c6ff 75%, #a8c0ff 100%);
+  background-attachment: fixed;
+  min-height:100vh; padding-bottom:90px; color:#2d2a4a;
+}
+header{
+  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
+  padding:18px 16px 12px; text-align:center; position:sticky; top:0; z-index:50;
+  border-bottom:1px solid rgba(255,255,255,0.6);
+  box-shadow:0 4px 20px rgba(139,115,255,0.15);
+}
+header h1{font-size:1.7rem; font-weight:800; letter-spacing:-0.5px}
+header p{font-size:0.85rem; opacity:0.7; margin-top:2px}
+.main-tabs{display:flex; gap:8px; justify-content:center; margin:14px 12px; flex-wrap:wrap}
+.tab-btn{
+  padding:10px 18px; border-radius:999px; border:2px solid rgba(255,255,255,0.9);
+  background:rgba(255,255,255,0.7); font-weight:700; cursor:pointer; transition:0.2s; font-size:0.9rem;
+}
+.tab-btn.active{background:#2d2a4a; color:white; border-color:#2d2a4a; box-shadow:0 4px 12px rgba(45,42,74,0.3)}
+.sub-tabs{display:flex; gap:8px; overflow-x:auto; padding:4px 16px 12px; scrollbar-width:none}
+.sub-tabs::-webkit-scrollbar{display:none}
+.sub-btn{
+  white-space:nowrap; padding:8px 14px; border-radius:999px; border:1.5px solid rgba(45,42,74,0.15);
+  background:rgba(255,255,255,0.8); font-weight:600; font-size:0.85rem; cursor:pointer
+}
+.sub-btn.active{background:#2d2a4a; color:white}
+.container{padding:0 14px}
+.card-form{
+  background:rgba(255,255,255,0.88); backdrop-filter:blur(10px);
+  border-radius:22px; padding:16px; box-shadow:0 8px 24px rgba(139,115,255,0.18);
+  border:1.5px solid rgba(255,255,255,0.9); margin-bottom:16px
+}
+.upload-area{
+  border:2px dashed #a99bff; border-radius:16px; padding:16px; text-align:center;
+  cursor:pointer; background:rgba(169,155,255,0.08); transition:0.2s; position:relative; overflow:hidden
+}
+.upload-area img{width:100%; max-height:200px; object-fit:cover; border-radius:12px; display:none}
+.upload-area.has-img{padding:0; border-style:solid}
+.upload-area.has-img img{display:block}
+.input{width:100%; padding:12px 14px; border-radius:14px; border:1.5px solid rgba(45,42,74,0.12); background:rgba(255,255,255,0.9); font-size:0.95rem; outline:none}
+.input:focus{border-color:#8b73ff}
+.row{display:flex; gap:10px}
+.row > *{flex:1}
+label{font-size:0.8rem; font-weight:700; opacity:0.7; margin:10px 0 4px; display:block}
+.btn-primary{
+  width:100%; padding:13px; border-radius:14px; border:none; background:linear-gradient(135deg,#6d5bff,#9b8cff);
+  color:white; font-weight:800; font-size:1rem; cursor:pointer; box-shadow:0 6px 18px rgba(109,91,255,0.35); margin-top:12px
+}
+.grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+@media(min-width:600px){.grid{grid-template-columns:1fr 1fr 1fr}}
+.item-card{
+  background:rgba(255,255,255,0.92); border-radius:18px; overflow:hidden;
+  box-shadow:0 6px 18px rgba(45,42,74,0.12); position:relative; cursor:pointer; transition:0.2s;
+}
+.item-card:active{transform:scale(0.97)}
+.item-card img{width:100%; height:165px; object-fit:cover; background:#e9e6ff}
+.item-info{padding:10px 11px}
+.item-info h4{font-size:0.9rem; line-height:1.2; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.item-info p{font-size:0.75rem; opacity:0.6; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.badge{
+  position:absolute; top:8px; left:8px; background:rgba(45,42,74,0.85); color:white;
+  font-size:0.65rem; padding:4px 8px; border-radius:999px; font-weight:700; backdrop-filter:blur(4px)
+}
+.progress-bar{height:4px; background:rgba(0,0,0,0.08); border-radius:999px; margin-top:6px; overflow:hidden}
+.progress-fill{height:100%; background:linear-gradient(90deg,#6d5bff,#a99bff)}
+.shelf-title{
+  font-size:1.1rem; font-weight:800; margin:22px 0 10px 2px; background:rgba(255,255,255,0.8);
+  display:inline-block; padding:6px 14px; border-radius:999px
+}
+.modal{
+  position:fixed; inset:0; background:rgba(20,16,40,0.55); backdrop-filter:blur(8px);
+  z-index:100; display:none; align-items:end; justify-content:center; padding:0;
+}
+.modal.show{display:flex}
+.modal-box{
+  background:white; width:100%; max-width:500px; border-radius:28px 28px 0 0;
+  max-height:88vh; overflow-y:auto; animation:slideUp 0.3s ease
+}
+@keyframes slideUp{from{transform:translateY(30%)} to{transform:translateY(0)}}
+.modal-cover{width:100%; height:280px; object-fit:cover}
+.modal-content{padding:18px}
+.modal-content h2{font-size:1.3rem}
+.modal-actions{display:flex; gap:10px; margin-top:16px}
+.btn-danger{flex:1; padding:12px; border-radius:12px; border:1.5px solid #ff6b8a; color:#ff3b6a; background:rgba(255,59,106,0.08); font-weight:700; cursor:pointer}
+.btn-move{flex:1; padding:12px; border-radius:12px; border:none; background:#2d2a4a; color:white; font-weight:700; cursor:pointer}
+.profile-card{
+  background:rgba(255,255,255,0.9); border-radius:22px; padding:20px; text-align:center;
+  box-shadow:0 8px 24px rgba(139,115,255,0.18)
+}
+.avatar{width:96px; height:96px; border-radius:50%; object-fit:cover; background:linear-gradient(135deg,#a8c0ff,#c2b6ff); margin:0 auto 12px; display:block; border:3px solid white; box-shadow:0 4px 12px rgba(0,0,0,0.15)}
+.stats{display:flex; gap:10px; margin-top:14px}
+.stat{flex:1; background:rgba(109,91,255,0.1); padding:12px; border-radius:16px}
+.stat b{font-size:1.4rem; display:block}
+.bottom-nav{
+  position:fixed; bottom:12px; left:12px; right:12px;
+  background:rgba(255,255,255,0.92); backdrop-filter:blur(16px);
+  border-radius:24px; display:flex; justify-content:space-around; padding:8px;
+  box-shadow:0 10px 30px rgba(45,42,74,0.2); border:1px solid rgba(255,255,255,0.9); z-index:60
+}
+.nav-btn{flex:1; padding:10px 4px; border:none; background:none; border-radius:16px; font-weight:700; font-size:0.75rem; cursor:pointer; color:#6b6788}
+.nav-btn.active{background:#2d2a4a; color:white}
+.hidden{display:none!important}
+.small{font-size:0.8rem; opacity:0.7}
+</style>
+</head>
+<body>
+
+<header>
+  <div>💙💜</div>
+  <h1>Universo Arbell</h1>
+  <p id="headerSub">Club de lectura Namjoon's • K-dramas & Libros</p>
+</header>
+
+<div id="view-biblioteca">
+  <div class="sub-tabs" id="bookTabs">
+    <button class="sub-btn active" data-status="leidos">Leídos</button>
+    <button class="sub-btn" data-status="empezados">Empezados</button>
+    <button class="sub-btn" data-status="pendientes">Pendientes</button>
+    <button class="sub-btn" data-status="bloqueo">Bloqueo</button>
+  </div>
+  <div class="container">
+    <div class="card-form" id="bookFormCard">
+      <div class="upload-area" id="bookUpload">
+        <div id="bookUploadText">📷 <b>Subir portada libro</b><br><span class="small">Toca para añadir</span></div>
+        <img id="bookPreview">
+      </div>
+      <input type="file" id="bookFile" accept="image/*" hidden>
+      <label>Título</label><input class="input" id="bTitle" placeholder="Nombre del libro">
+      <label>Autor</label><input class="input" id="bAuthor" placeholder="Autor">
+      <div id="fields-leidos">
+        <div class="row"><div><label>Páginas totales</label><input class="input" id="bPages" type="number" placeholder="300"></div><div><label>Calificación</label><select class="input" id="bRating"><option>5 ⭐</option><option>4 ⭐</option><option>3 ⭐</option><option>2 ⭐</option><option>1 ⭐</option></select></div></div>
+        <div class="row"><div><label>Inicio</label><input class="input" id="bStart" type="date"></div><div><label>Fin</label><input class="input" id="bEnd" type="date"></div></div>
+      </div>
+      <div id="fields-empezados" class="hidden">
+        <div class="row"><div><label>Total páginas</label><input class="input" id="bTotalPages" type="number" placeholder="300"></div><div><label>Página actual</label><input class="input" id="bCurrentPage" type="number" placeholder="120"></div></div>
+        <label>Fecha inicio</label><input class="input" id="bStart2" type="date">
+      </div>
+      <div id="fields-pendientes" class="hidden">
+        <label>Páginas</label><input class="input" id="bPagesPend" type="number" placeholder="300">
+      </div>
+      <div id="fields-bloqueo" class="hidden">
+        <label>Páginas totales</label><input class="input" id="bPagesBloq" type="number" placeholder="300">
+        <label>¿Por qué lo abandonaste?</label><input class="input" id="bReason" placeholder="No me enganchó...">
+        <label>¿Lo retomarías?</label><select class="input" id="bResume"><option>Sí, después</option><option>No</option><option>Tal vez</option></select>
+      </div>
+      <button class="btn-primary" id="addBookBtn">+ Añadir a <span id="addBookLabel">Leídos</span></button>
+    </div>
+    <div id="bookList" class="grid"></div>
+  </div>
+</div>
+
+<div id="view-dramas" class="hidden">
+  <div class="sub-tabs" id="dramaTabs">
+    <button class="sub-btn active" data-status="vistos">Vistos</button>
+    <button class="sub-btn" data-status="pausados">Pausados</button>
+    <button class="sub-btn" data-status="pendientes">Pendientes</button>
+    <button class="sub-btn" data-status="abandonados">Abandonados</button>
+  </div>
+  <div class="container">
+    <div class="card-form">
+      <div class="upload-area" id="dramaUpload">
+        <div id="dramaUploadText">📷 <b>Subir portada drama</b><br><span class="small">Toca para añadir</span></div>
+        <img id="dramaPreview">
+      </div>
+      <input type="file" id="dramaFile" accept="image/*" hidden>
+      <label>Título</label><input class="input" id="dTitle" placeholder="Nombre del drama">
+      <label>Plataforma</label><input class="input" id="dPlatform" placeholder="Netflix, Viki, Disney...">
+      <div id="d-fields-vistos">
+        <div class="row"><div><label>Capítulos totales</label><input class="input" id="dTotal" type="number" placeholder="16"></div><div><label>Calificación</label><select class="input" id="dRating"><option>5 ⭐</option><option>4 ⭐</option><option>3 ⭐</option><option>2 ⭐</option><option>1 ⭐</option></select></div></div>
+        <div class="row"><div><label>Inicio</label><input class="input" id="dStart" type="date"></div><div><label>Fin</label><input class="input" id="dEnd" type="date"></div></div>
+      </div>
+      <div id="d-fields-pausados" class="hidden">
+        <div class="row"><div><label>Total caps</label><input class="input" id="dTotalP" type="number"></div><div><label>Cap actual</label><input class="input" id="dCurrent" type="number"></div></div>
+        <label>Fecha inicio</label><input class="input" id="dStartP" type="date">
+      </div>
+      <div id="d-fields-pendientes" class="hidden">
+        <div class="row"><div><label>Total capítulos</label><input class="input" id="dTotalPen" type="number"></div><div><label>Dónde ver</label><input class="input" id="dWhere" placeholder="Netflix..."></div></div>
+      </div>
+      <div id="d-fields-abandonados" class="hidden">
+        <div class="row"><div><label>Total caps</label><input class="input" id="dTotalA" type="number"></div><div><label>Cap donde quedé</label><input class="input" id="dCurrentA" type="number"></div></div>
+        <label>¿Por qué lo abandonaste?</label><input class="input" id="dReason" placeholder="Se hizo aburrido...">
+        <label>¿Lo retomarías?</label><select class="input" id="dResume"><option>No</option><option>Sí</option><option>Tal vez</option></select>
+      </div>
+      <button class="btn-primary" id="addDramaBtn">+ Añadir a <span id="addDramaLabel">Vistos</span></button>
+    </div>
+    <div id="dramaList" class="grid"></div>
+  </div>
+</div>
+
+<div id="view-estanteria" class="hidden">
+  <div class="container" style="padding-top:10px">
+    <div class="main-tabs" style="margin:8px 0 14px">
+      <button class="tab-btn active" data-est="libros-leidos">📚 Leídos</button>
+      <button class="tab-btn" data-est="libros-empezados">📖 Empezados</button>
+      <button class="tab-btn" data-est="libros-pendientes">📋 Pendientes</button>
+      <button class="tab-btn" data-est="libros-bloqueo">🚫 Bloqueo</button>
+    </div>
+    <div class="main-tabs" style="margin:0 0 14px">
+      <button class="tab-btn" data-est="dramas-vistos">🎬 Vistos</button>
+      <button class="tab-btn" data-est="dramas-pausados">⏸️ Pausados</button>
+      <button class="tab-btn" data-est="dramas-pendientes">🕒 Pendientes</button>
+      <button class="tab-btn" data-est="dramas-abandonados">💔 Abandonados</button>
+    </div>
+    <div id="shelfContainer"></div>
+  </div>
+</div>
+
+<div id="view-perfil" class="hidden">
+  <div class="container" style="padding-top:16px">
+    <div class="profile-card">
+      <input type="file" id="avatarFile" accept="image/*" hidden>
+      <img id="avatarImg" class="avatar" onclick="document.getElementById('avatarFile').click()" title="Toca para cambiar foto">
+      <div style="font-size:0.75rem; opacity:0.6; margin-bottom:8px">Toca la foto para cambiarla</div>
+      <input class="input" id="profileName" placeholder="Tu nombre" style="text-align:center; font-weight:800; font-size:1.1rem">
+      <div class="stats">
+        <div class="stat"><b id="statBooks">0</b><span class="small">Libros leídos</span></div>
+        <div class="stat"><b id="statDramas">0</b><span class="small">Dramas vistos</span></div>
+        <div class="stat"><b id="statTotal">0</b><span class="small">Total</span></div>
+      </div>
+      <div style="margin-top:14px; display:grid; grid-template-columns:1fr 1fr; gap:8px; text-align:left" class="small">
+        <div>📚 Empezados: <b id="statEmpezados">0</b></div>
+        <div>📋 Por leer: <b id="statPendientesL">0</b></div>
+        <div>🎬 Pausados: <b id="statPausados">0</b></div>
+        <div>🕒 Por ver: <b id="statPendientesD">0</b></div>
+      </div>
+      <button class="btn-primary" id="saveProfile">Guardar perfil</button>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" data-view="biblioteca">📚<br>Biblioteca</button>
+  <button class="nav-btn" data-view="dramas">🎬<br>Series</button>
+  <button class="nav-btn" data-view="estanteria">🗄️<br>Estantes</button>
+  <button class="nav-btn" data-view="perfil">👤<br>Arbell</button>
+</div>
+
+<div class="modal" id="detailModal">
+  <div class="modal-box">
+    <img id="mCover" class="modal-cover">
+    <div class="modal-content">
+      <div style="display:flex; justify-content:space-between; align-items:start">
+        <div><h2 id="mTitle"></h2><p id="mSub" class="small"></p></div>
+        <span id="mNumber" class="badge" style="position:static"></span>
+      </div>
+      <div id="mDetails" style="margin-top:12px; display:grid; gap:8px"></div>
+      <div class="modal-actions">
+        <button class="btn-danger" id="mDelete">🗑️ Borrar</button>
+        <button class="btn-move" id="mMove">Mover de apartado</button>
+      </div>
+      <button class="btn-primary" onclick="closeModal()" style="background:#e9e6ff; color:#2d2a4a; margin-top:8px">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let books = JSON.parse(localStorage.getItem('arbell_books_v2')||'[]');
+let dramas = JSON.parse(localStorage.getItem('arbell_dramas_v2')||'[]');
+let profile = JSON.parse(localStorage.getItem('arbell_profile_v2')||'{"name":"Arbell","avatar":""}');
+let currentBookStatus='leidos', currentDramaStatus='vistos', currentEst='libros-leidos';
+let tempCoverBook='', tempCoverDrama='', selectedItem=null;
+
+function save(){localStorage.setItem('arbell_books_v2',JSON.stringify(books)); localStorage.setItem('arbell_dramas_v2',JSON.stringify(dramas)); renderAll();}
+
+function init(){
+  document.getElementById('profileName').value=profile.name;
+  if(profile.avatar) document.getElementById('avatarImg').src=profile.avatar;
+  else document.getElementById('avatarImg').src='';
+  document.getElementById('bookUpload').onclick=()=>document.getElementById('bookFile').click();
+  document.getElementById('dramaUpload').onclick=()=>document.getElementById('dramaFile').click();
+  document.getElementById('bookFile').onchange=e=>readFile(e.target.files[0], data=>{tempCoverBook=data; document.getElementById('bookPreview').src=data; document.getElementById('bookUpload').classList.add('has-img'); document.getElementById('bookUploadText').style.display='none';});
+  document.getElementById('dramaFile').onchange=e=>readFile(e.target.files[0], data=>{tempCoverDrama=data; document.getElementById('dramaPreview').src=data; document.getElementById('dramaUpload').classList.add('has-img'); document.getElementById('dramaUploadText').style.display='none';});
+  document.getElementById('avatarFile').onchange=e=>readFile(e.target.files[0], data=>{profile.avatar=data; document.getElementById('avatarImg').src=data;});
+  document.getElementById('addBookBtn').onclick=addBook;
+  document.getElementById('addDramaBtn').onclick=addDrama;
+  document.getElementById('saveProfile').onclick=()=>{profile.name=document.getElementById('profileName').value||'Arbell'; localStorage.setItem('arbell_profile_v2',JSON.stringify(profile)); document.getElementById('headerSub').textContent=profile.name+' • '+books.filter(b=>b.status==='leidos').length+' libros, '+dramas.filter(d=>d.status==='vistos').length+' dramas'; alert('Perfil guardado 💙');};
+  document.querySelectorAll('#bookTabs.sub-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('#bookTabs.sub-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); currentBookStatus=b.dataset.status; document.getElementById('addBookLabel').textContent=b.textContent; ['leidos','empezados','pendientes','bloqueo'].forEach(s=>document.getElementById('fields-'+s).classList.toggle('hidden',s!==currentBookStatus)); renderBooks();});
+  document.querySelectorAll('#dramaTabs.sub-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('#dramaTabs.sub-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); currentDramaStatus=b.dataset.status; document.getElementById('addDramaLabel').textContent=b.textContent; ['vistos','pausados','pendientes','abandonados'].forEach(s=>document.getElementById('d-fields-'+s).classList.toggle('hidden',s!==currentDramaStatus)); renderDramas();});
+  document.querySelectorAll('.bottom-nav .nav-btn').forEach(b=>b.onclick=()=>{document.querySelectorAll('.bottom-nav .nav-btn').forEach(x=>x.classList.remove('active')); b.classList.add('active'); document.querySelectorAll('[id^=view-]').forEach(v=>v.classList.add('hidden')); document.getElementById('view-'+b.dataset.view).classList.remove('hidden'); if(b.dataset.view==='estanteria') renderShelf(); if(b.dataset.view==='perfil') updateStats();});
+  document.querySelectorAll('[data-est]').forEach(b=>b.onclick=()=>{document.querySelectorAll('[data-est]').forEach(x=>x.classList.remove('active')); b.classList.add('active'); currentEst=b.dataset.est; renderShelf();});
+  document.getElementById('detailModal').onclick=e=>{if(e.target.id==='detailModal') closeModal();};
+  document.getElementById('mDelete').onclick=deleteSelected;
+  document.getElementById('mMove').onclick=moveSelected;
+  renderAll();
+}
+function readFile(file,cb){if(!file)return; const r=new FileReader(); r.onload=()=>cb(r.result); r.readAsDataURL(file);}
+function addBook(){
+  const title=document.getElementById('bTitle').value.trim(); if(!title)return alert('Pon título');
+  const author=document.getElementById('bAuthor').value.trim()||'Sin autor';
+  let obj={id:Date.now(), number:books.length+1, title, author, cover:tempCoverBook||'', status:currentBookStatus, created:Date.now()};
+  if(currentBookStatus==='leidos'){obj.totalPages=document.getElementById('bPages').value||0; obj.rating=document.getElementById('bRating').value; obj.startDate=document.getElementById('bStart').value; obj.endDate=document.getElementById('bEnd').value;}
+  if(currentBookStatus==='empezados'){obj.totalPages=document.getElementById('bTotalPages').value||0; obj.currentPage=document.getElementById('bCurrentPage').value||0; obj.startDate=document.getElementById('bStart2').value;}
+  if(currentBookStatus==='pendientes'){obj.totalPages=document.getElementById('bPagesPend').value||0;}
+  if(currentBookStatus==='bloqueo'){obj.totalPages=document.getElementById('bPagesBloq').value||0; obj.reason=document.getElementById('bReason').value; obj.wouldResume=document.getElementById('bResume').value;}
+  books.push(obj); save(); clearBookForm();
+}
+function addDrama(){
+  const title=document.getElementById('dTitle').value.trim(); if(!title)return alert('Pon título');
+  let obj={id:Date.now(), number:dramas.length+1, title, cover:tempCoverDrama||'', status:currentDramaStatus, platform:document.getElementById('dPlatform').value||'', created:Date.now()};
+  if(currentDramaStatus==='vistos'){obj.totalEp=document.getElementById('dTotal').value||0; obj.rating=document.getElementById('dRating').value; obj.startDate=document.getElementById('dStart').value; obj.endDate=document.getElementById('dEnd').value;}
+  if(currentDramaStatus==='pausados'){obj.totalEp=document.getElementById('dTotalP').value||0; obj.currentEp=document.getElementById('dCurrent').value||0; obj.startDate=document.getElementById('dStartP').value;}
+  if(currentDramaStatus==='pendientes'){obj.totalEp=document.getElementById('dTotalPen').value||0; obj.where=document.getElementById('dWhere').value||obj.platform;}
+  if(currentDramaStatus==='abandonados'){obj.totalEp=document.getElementById('dTotalA').value||0; obj.currentEp=document.getElementById('dCurrentA').value||0; obj.reason=document.getElementById('dReason').value; obj.wouldResume=document.getElementById('dResume').value;}
+  dramas.push(obj); save(); clearDramaForm();
+}
+function clearBookForm(){['bTitle','bAuthor','bPages','bTotalPages','bCurrentPage','bPagesPend','bPagesBloq','bReason'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';}); tempCoverBook=''; document.getElementById('bookPreview').src=''; document.getElementById('bookUpload').classList.remove('has-img'); document.getElementById('bookUploadText').style.display='block';}
+function clearDramaForm(){['dTitle','dPlatform','dTotal','dTotalP','dCurrent','dTotalPen','dWhere','dTotalA','dCurrentA','dReason'].forEach(id=>{const el=document.getElementById(id); if(el) el.value='';}); tempCoverDrama=''; document.getElementById('dramaPreview').src=''; document.getElementById('dramaUpload').classList.remove('has-img'); document.getElementById('dramaUploadText').style.display='block';}
+function renderAll(){renderBooks(); renderDramas(); updateStats();}
+function renderBooks(){
+  const list=document.getElementById('bookList'); list.innerHTML='';
+  const filtered=books.filter(b=>b.status===currentBookStatus).sort((a,b)=>b.created-a.created);
+  filtered.forEach(b=>{
+    const div=document.createElement('div'); div.className='item-card'; div.onclick=()=>openModal(b,'book');
+    let progress=''; if(b.status==='empezados' && b.totalPages){const pct=Math.min(100, Math.round((b.currentPage/b.totalPages)*100)); progress=`<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="small">Pág ${b.currentPage}/${b.totalPages} • ${pct}%</div>`;}
+    div.innerHTML=`<span class="badge">#${b.number} • ${b.status}</span><img src="${b.cover||'https://via.placeholder.com/300x400/e9e6ff/6d5bff?text='+encodeURIComponent(b.title)}"><div class="item-info"><h4>${b.title}</h4><p>${b.author}</p>${progress}${b.status==='pendientes'?`<div class="small">${b.totalPages||''} págs</div>`:''}</div>`;
+    list.appendChild(div);
+  });
+  if(!filtered.length) list.innerHTML=`<div class="small" style="grid-column:1/-1; text-align:center; padding:20px; background:rgba(255,255,255,0.7); border-radius:16px">No hay libros en ${currentBookStatus} aún</div>`;
+}
+function renderDramas(){
+  const list=document.getElementById('dramaList'); list.innerHTML='';
+  const filtered=dramas.filter(d=>d.status===currentDramaStatus).sort((a,b)=>b.created-a.created);
+  filtered.forEach(d=>{
+    const div=document.createElement('div'); div.className='item-card'; div.onclick=()=>openModal(d,'drama');
+    let progress=''; if(d.status==='pausados' && d.totalEp){const pct=Math.min(100,Math.round((d.currentEp/d.totalEp)*100)); progress=`<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="small">Ep ${d.currentEp}/${d.totalEp}</div>`;}
+    div.innerHTML=`<span class="badge">#${d.number} • ${d.status}</span><img src="${d.cover||'https://via.placeholder.com/300x400/e9e6ff/6d5bff?text='+encodeURIComponent(d.title)}"><div class="item-info"><h4>${d.title}</h4><p>${d.platform||d.where||''}</p>${progress}</div>`;
+    list.appendChild(div);
+  });
+  if(!filtered.length) list.innerHTML=`<div class="small" style="grid-column:1/-1; text-align:center; padding:20px; background:rgba(255,255,255,0.7); border-radius:16px">No hay dramas en ${currentDramaStatus}</div>`;
+}
+function renderShelf(){
+  const cont=document.getElementById('shelfContainer'); cont.innerHTML='';
+  const [type,status]=currentEst.split('-');
+  let items = type==='libros'? books.filter(b=>b.status===status) : dramas.filter(d=>d.status===status);
+  if(!items.length){cont.innerHTML='<div class="small" style="text-align:center; padding:30px; background:rgba(255,255,255,0.7); border-radius:16px">Vacío aún</div>'; return;}
+  if(type==='libros'){
+    const groups={}; items.forEach(it=>{const k=it.author||'Sin autor'; (groups[k]=groups[k]||[]).push(it);});
+    Object.keys(groups).sort().forEach(author=>{
+      const h=document.createElement('div'); h.className='shelf-title'; h.textContent=`✨ ${author} • ${groups[author].length}`; cont.appendChild(h);
+      const grid=document.createElement('div'); grid.className='grid'; groups[author].forEach(b=>{
+        const div=document.createElement('div'); div.className='item-card'; div.onclick=()=>openModal(b,'book');
+        div.innerHTML=`<span class="badge">#${b.number}</span><img src="${b.cover||'https://via.placeholder.com/300x400/e9e6ff/6d5bff?text='+encodeURIComponent(b.title)}"><div class="item-info"><h4>${b.title}</h4><p>${b.totalPages||''} págs</p></div>`; grid.appendChild(div);
+      }); cont.appendChild(grid);
+    });
+  } else {
+    const groups={}; items.forEach(it=>{const k=it.platform||it.where||'Sin plataforma'; (groups[k]=groups[k]||[]).push(it);});
+    Object.keys(groups).sort().forEach(plat=>{
+      const h=document.createElement('div'); h.className='shelf-title'; h.textContent=`📺 ${plat} • ${groups[plat].length}`; cont.appendChild(h);
+      const grid=document.createElement('div'); grid.className='grid'; groups[plat].forEach(d=>{
+        const div=document.createElement('div'); div.className='item-card'; div.onclick=()=>openModal(d,'drama');
+        div.innerHTML=`<span class="badge">#${d.number}</span><img src="${d.cover||'https://via.placeholder.com/300x400/e9e6ff/6d5bff?text='+encodeURIComponent(d.title)}"><div class="item-info"><h4>${d.title}</h4><p>${d.totalEp||''} caps</p></div>`; grid.appendChild(div);
+      }); cont.appendChild(grid);
+    });
+  }
+}
+function updateStats(){
+  document.getElementById('statBooks').textContent=books.filter(b=>b.status==='leidos').length;
+  document.getElementById('statDramas').textContent=dramas.filter(d=>d.status==='vistos').length;
+  document.getElementById('statTotal').textContent=books.filter(b=>b.status==='leidos').length + dramas.filter(d=>d.status==='vistos').length;
+  document.getElementById('statEmpezados').textContent=books.filter(b=>b.status==='empezados').length;
+  document.getElementById('statPendientesL').textContent=books.filter(b=>b.status==='pendientes').length;
+  document.getElementById('statPausados').textContent=dramas.filter(d=>d.status==='pausados').length;
+  document.getElementById('statPendientesD').textContent=dramas.filter(d=>d.status==='pendientes').length;
+}
+function openModal(item,type){
+  selectedItem={...item, _type:type};
+  document.getElementById('mCover').src=item.cover||`https://via.placeholder.com/500x700/e9e6ff/6d5bff?text=${encodeURIComponent(item.title)}`;
+  document.getElementById('mTitle').textContent=item.title;
+  document.getElementById('mSub').textContent=type==='book'? item.author : (item.platform||item.where||'');
+  document.getElementById('mNumber').textContent=`#${item.number} • ${item.status}`;
+  let html='';
+  if(type==='book'){
+    html+=`<div><b>Autor:</b> ${item.author}</div>`;
+    if(item.totalPages) html+=`<div><b>Páginas:</b> ${item.currentPage? item.currentPage+' / '+item.totalPages : item.totalPages}</div>`;
+    if(item.startDate) html+=`<div><b>Inicio:</b> ${item.startDate}</div>`;
+    if(item.endDate) html+=`<div><b>Fin:</b> ${item.endDate}</div>`;
+    if(item.rating) html+=`<div><b>Calificación:</b> ${item.rating}</div>`;
+    if(item.reason) html+=`<div><b>Motivo abandono:</b> ${item.reason}</div>`;
+    if(item.wouldResume) html+=`<div><b>¿Retomar?</b> ${item.wouldResume}</div>`;
+  } else {
+    html+=`<div><b>Plataforma:</b> ${item.platform||item.where||''}</div>`;
+    if(item.totalEp) html+=`<div><b>Capítulos:</b> ${item.currentEp? item.currentEp+' / '+item.totalEp : item.totalEp}</div>`;
+    if(item.startDate) html+=`<div><b>Inicio:</b> ${item.startDate}</div>`;
+    if(item.endDate) html+=`<div><b>Fin:</b> ${item.endDate}</div>`;
+    if(item.rating) html+=`<div><b>Calificación:</b> ${item.rating}</div>`;
+    if(item.reason) html+=`<div><b>Motivo abandono:</b> ${item.reason}</div>`;
+    if(item.wouldResume) html+=`<div><b>¿Retomar?</b> ${item.wouldResume}</div>`;
+  }
+  document.getElementById('mDetails').innerHTML=html;
+  document.getElementById('detailModal').classList.add('show');
+}
+function closeModal(){document.getElementById('detailModal').classList.remove('show');}
+function deleteSelected(){
+  if(!selectedItem) return;
+  if(!confirm('¿Borrar? Se borrará para siempre')) return;
+  if(selectedItem._type==='book') books=books.filter(b=>b.id!==selectedItem.id);
+  else dramas=dramas.filter(d=>d.id!==selectedItem.id);
+  save(); closeModal();
+}
+function moveSelected(){
+  if(!selectedItem) return;
+  const newStatus = prompt(`Mover a: para libros (leidos, empezados, pendientes, bloqueo) / para dramas (vistos, pausados, pendientes, abandonados)\nActual: ${selectedItem.status}\nEscribe el nuevo:`);
+  if(!newStatus) return;
+  const s=newStatus.toLowerCase().trim();
+  if(selectedItem._type==='book' && ['leidos','empezados','pendientes','bloqueo'].includes(s)){
+    books = books.map(b=> b.id===selectedItem.id? {...b, status:s} : b);
+  } else if(selectedItem._type==='drama' && ['vistos','pausados','pendientes','abandonados'].includes(s)){
+    dramas = dramas.map(d=> d.id===selectedItem.id? {...d, status:s} : d);
+  } else {alert('Ese apartado no existe'); return;}
+  save(); closeModal();
+}
+init();
+</script>
+</body>
+</html>
